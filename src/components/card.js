@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 const Card = (article) => {
   // TASK 5
@@ -19,38 +19,36 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-  
-  const card = document.createElement("div")
-  const headline = document.createElement("div")
-  const authorDiv = document.createElement("div")
-  const imageContainer = document.createElement("div")
-  const cardImage = document.createElement("img")
-  const authorName = document.createElement("span")
-  
-  card.appendChild(headline)
-  card.appendChild(authorDiv)
-  authorDiv.appendChild(imageContainer)
-  imageContainer.appendChild(cardImage)
-  authorDiv.appendChild(authorName)
-  
-  card.classList.add("card")
-  headline.classList.add("headline")
-  authorDiv.classList.add("author")
-  imageContainer.classList.add("img-container")
 
-  // console.log('This is the article par:', article)
-  headline.textContent = article.javascript[0].headline
-  imageContainer.src = article.javascript[0].authorPhoto
-  authorName.textContent = `By ${article.javascript[0].authorName}`
+  const card = document.createElement("div");
+  const headline = document.createElement("div");
+  const authorDiv = document.createElement("div");
+  const imageContainer = document.createElement("div");
+  const cardImage = document.createElement("img");
+  const authorName = document.createElement("span");
 
+  card.appendChild(headline);
+  card.appendChild(authorDiv);
+  authorDiv.appendChild(imageContainer);
+  imageContainer.appendChild(cardImage);
+  authorDiv.appendChild(authorName);
+
+  card.classList.add("card");
+  headline.classList.add("headline");
+  authorDiv.classList.add("author");
+  imageContainer.classList.add("img-container");
+
+  headline.textContent = article.headline;
+  cardImage.src = article.authorPhoto;
+  authorName.textContent = `By = article.authorName}`;
   
-  // card.addEventListener("click", () => {
-  //   console.log(article.javascript[0].headline)
-  // })
+  
+  card.addEventListener("click", () => {
+      console.log(article.headline)
+    })
 
-  return card
-}
-
+    return card;
+};
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -63,15 +61,25 @@ const cardAppender = (selector) => {
   //
 
   axios
-  .get("https://lambda-times-api.herokuapp.com/articles")
-  .then((response) => {
-    console.log(response)
-    const cardContainer = document.querySelector(selector)
-    cardContainer.appendChild(Card(response.data.articles))
-  })
-  .catch((error) => {
-    console.log(error, "Something is wrong with article response, check card Axios")
-  })
-}
+    .get("https://lambda-times-api.herokuapp.com/articles")
+    .then((response) => {
+      const cardContainer = document.querySelector(selector);
+      Object.keys(response.data.articles).forEach((articleSubject) => {
+        // title of articles
+        const data = response.data.articles[`${articleSubject}`];
 
-export { Card, cardAppender }
+        data.forEach((subject) => {
+          cardContainer.append(Card(subject))
+        });
+      });
+      
+    })
+    .catch((error) => {
+      console.log(
+        error,
+        "Something is wrong with article response, check card Axios"
+      );
+    });
+};
+
+export { Card, cardAppender };
